@@ -280,7 +280,7 @@ for execetundo in range (1):
     cola()
 
     prox_campo()
-    serv.write('carlos.e.braga@kroton.com.br')
+    serv.write('carlos_braga@gmail.com.br') #email_ficticio
 
     for i in range(2):
         prox_campo()
