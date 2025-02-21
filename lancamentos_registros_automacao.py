@@ -8,7 +8,7 @@ import keyboard
 executando = True
 
 def monitorar_tecla():
-    """Interrompe o programa quando a tecla 'p' for pressionada."""
+    "Interrompe o programa quando a tecla 'p' for pressionada."
     global executando
     keyboard.wait('p')  # Aguarda a tecla ser pressionada
     executando = False   # Altera a variável para interromper o loop
@@ -95,6 +95,7 @@ def agendamento ():
         espera_curta()
         confirma()
 
+    if not executando: exit()
     percorre_campos(2)
     serv.write('odontologia')
     espera_curta()
@@ -124,6 +125,8 @@ def atendimento ():
     serv.sleep(5)
     percorre_campos(11)
     espera_curta()
+    
+    if not executando: exit()
     for i in range (2):
         espera_curta()
         confirma()
@@ -138,11 +141,7 @@ def atendimento ():
     percorre_campos(2)
     confirma()
 
-def pagamento ():
-    serv.sleep(5)
-    percorre_campos(9)
-    serv.hotkey('space')
-    espera_curta()
+def dinheiro ():
     percorre_campos(4)
     serv.hotkey('space')
     percorre_campos(3)
@@ -152,7 +151,100 @@ def pagamento ():
     serv.write('2500')
     percorre_campos(1)
     serv.write('taxa unica')
+
+def debito ():
+    percorre_campos(3)
+    serv.hotkey('space')
+    percorre_campos(4)
     espera_curta()
+    serv.write('2500')
+    percorre_campos(1)
+    serv.write('2500')
+    percorre_campos(1)
+    prox_pag()
+    espera_curta()
+    inicio_pag()
+    percorre_campos(9)
+    copia()
+    espera_curta()
+    prox_pag()
+    espera_curta()
+    cola()
+    percorre_campos(1)
+    serv.write('taxa unica')
+
+
+def credito ():
+    percorre_campos(2)
+    serv.hotkey('space')
+    percorre_campos(5)
+    espera_curta()
+    serv.write('2500')
+    percorre_campos(1)
+    serv.write('2500')
+    percorre_campos(1)
+    prox_pag()
+    espera_curta()
+    inicio_pag()
+    percorre_campos(9)
+    copia()
+    espera_curta()
+    prox_pag()
+    espera_curta()
+    cola()
+    percorre_campos(1)
+    serv.write('taxa unica')
+
+
+def pix ():
+    percorre_campos(5)
+    serv.hotkey('space')
+    percorre_campos(2)
+    espera_curta()
+    serv.write('2500')
+    percorre_campos(1)
+    serv.write('2500')
+    percorre_campos(1)
+    prox_pag()
+    espera_curta()
+    inicio_pag()
+    percorre_campos(9)
+    copia()
+    espera_curta()
+    prox_pag()
+    espera_curta()
+    cola()
+    percorre_campos(1)
+    serv.write('taxa unica')
+
+
+
+
+
+
+
+
+def pagamento (pag):
+    serv.sleep(3)
+    percorre_campos(9)
+    serv.hotkey('space')
+    espera_curta()
+
+    #fução de pagamento
+
+    if pag == 'Débito':
+        debito()
+    
+    elif pag == 'Crédito':
+        credito()
+    
+    elif pag == 'Pix':
+        pix()
+    
+    else:
+        dinheiro()
+
+   
     percorre_campos(8)
     confirma()
     
@@ -280,7 +372,7 @@ for execetundo in range (1):
     cola()
 
     prox_campo()
-    serv.write('carlos_braga@gmail.com.br') #email_ficticio
+    serv.write('carlos.e.braga@kroton.com.br')
 
     for i in range(2):
         prox_campo()
@@ -306,35 +398,38 @@ for execetundo in range (1):
 
     serv.sleep(5)
     for i in range(17):
-        espera_curta()
         prox_campo()
-
 
     espera_curta()
     confirma()
 
-
-
 #inicio do código para agendamento
-
     serv.sleep(3)
     pag_anterior()
-    
+
+    if not executando: exit()
     agendamento()
 
 #inicio do código para registrar atendimento
-
-
+    
+    if not executando: exit()
     atendimento()
 
     #registrar pagamento
+    serv.sleep(2)
+    pag = serv.confirm('Escolha a Forma de Pagamento', buttons=['Débito', 'Crédito', 'Pix', 'Dinheiro'])
 
-    pagamento()
+    pagamento(pag)
 
     pag_anterior()
 
-print("Programa encerrado com sucesso!")
+    prox_pag()
+    prox_campo()
+    for i in range (2):
+        espera_curta()
+        confirma()
 
+print("Programa encerrado com sucesso!")
 
 
 
