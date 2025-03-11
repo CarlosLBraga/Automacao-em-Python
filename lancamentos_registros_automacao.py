@@ -8,9 +8,9 @@ import keyboard
 executando = True
 
 def monitorar_tecla():
-    "Interrompe o programa quando a tecla 'p' for pressionada."
+    "Interrompe o programa quando a tecla 'ctrl' for pressionada."
     global executando
-    keyboard.wait('p')  # Aguarda a tecla ser pressionada
+    keyboard.wait('ctrl')  # Aguarda a tecla ser pressionada
     executando = False   # Altera a variável para interromper o loop
     serv.alert('PROGRAMA INTERROMPIDO')
     print("Execução interrompida pelo usuário!")
@@ -42,7 +42,7 @@ def cola():
 
 def espera_curta():
     if not executando: return
-    serv.sleep(0.5)
+    serv.sleep(1.5)
 
 def pag_anterior ():
     serv.hotkey('alt', 'left')
@@ -64,13 +64,14 @@ def aba_cadastro ():
     percorre_campos(10)
 
 
-def agendamento ():
+
+def agendamento (hora):
     serv.sleep(5)
 
     percorre_campos(9)
 
     confirma()
-    serv.sleep(1)
+    serv.sleep(4)
 
     percorre_campos(8)
 
@@ -110,8 +111,11 @@ def agendamento ():
     serv.doubleClick(x=888, y=328)
     espera_curta()
     percorre_campos(1)
-    serv.write('9')
-    serv.write('0')
+    if hora == '09:00':
+        serv.write('900')
+    elif hora == '18:00':
+        serv.write('1800')
+    
     percorre_campos(3)
     confirma()
     serv.sleep(2)
@@ -125,7 +129,7 @@ def atendimento ():
     serv.sleep(5)
     percorre_campos(11)
     espera_curta()
-    
+
     if not executando: exit()
     for i in range (2):
         espera_curta()
@@ -225,7 +229,7 @@ def pix ():
 
 
 def pagamento (pag):
-    serv.sleep(3)
+    serv.sleep(4)
     percorre_campos(9)
     serv.hotkey('space')
     espera_curta()
@@ -252,8 +256,38 @@ def pagamento (pag):
     espera_curta()
     percorre_campos(2)
     confirma()
+
     espera_curta()
-    confirma()
+    percorre_campos(2)
+    confirma
+
+    espera_curta()
+    prox_pag()
+
+    if pag == 'Dinheiro':
+        inicio_pag()
+        espera_curta()
+        for i in range(10):
+            prox_campo()
+
+        for i in range (2):
+            espera_curta()
+            confirma()  
+    
+    else:
+        prox_campo()
+        for i in range (2):
+            
+            espera_curta()
+            confirma()
+
+    espera_curta()
+    prox_pag()
+    espera_curta()
+
+    
+    
+
 
 
 
@@ -262,7 +296,16 @@ def pagamento (pag):
 
 
 
-serv.sleep(5)
+serv.sleep(4)
+
+usuario = serv.confirm('selecione o usuário da execução', buttons =['Cadu', 'Matheus'])
+
+if usuario == 'Cadu':
+    u = 'carlos.e.braga@kroton.com.br'
+elif usuario == 'Matheus':
+    u = 'matheus.lima@cogna.com.br'
+
+
 
 inicio_pag()
 
@@ -372,7 +415,7 @@ for execetundo in range (1):
     cola()
 
     prox_campo()
-    serv.write('carlos.e.braga@kroton.com.br')
+    serv.write(u) #email
 
     for i in range(2):
         prox_campo()
@@ -404,15 +447,18 @@ for execetundo in range (1):
     confirma()
 
 #inicio do código para agendamento
-    serv.sleep(3)
+    
+    
     pag_anterior()
+    serv.sleep(3)
+    hora = serv.confirm('Escolha o Horário', buttons=['09:00', '18:00'])
 
     if not executando: exit()
-    agendamento()
+    agendamento(hora)
 
 #inicio do código para registrar atendimento
     
-    if not executando: exit()
+    if not executando: break
     atendimento()
 
     #registrar pagamento
@@ -421,13 +467,8 @@ for execetundo in range (1):
 
     pagamento(pag)
 
-    pag_anterior()
 
-    prox_pag()
-    prox_campo()
-    for i in range (2):
-        espera_curta()
-        confirma()
+    
 
 print("Programa encerrado com sucesso!")
 
